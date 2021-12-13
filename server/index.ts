@@ -3,13 +3,16 @@ import FastifyStatic from 'fastify-static'
 import path from 'path'
 import { FastifySSEPlugin } from 'fastify-sse-v2'
 import FastifyMultipart from 'fastify-multipart'
+import cors from 'fastify-cors'
 import { on, EventEmitter } from 'events'
 import fs from 'fs/promises'
 
 const app = Fastify({ logger: true })
 
+app.register(cors)
+
 app.register(FastifyStatic, {
-  root: path.resolve('./public'),
+  root: path.resolve(__dirname, '../'),
 })
 
 app.register(FastifySSEPlugin)
