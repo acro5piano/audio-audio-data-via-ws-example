@@ -12,6 +12,12 @@ gen-mpeg-dash:
 		| head -1 \
 		| xargs ffmpeg -c copy -window_size 0 -movflags +faststart mpeg-dash/output.mpd -re -i
 
+gen-hls:
+	find public/recordings/*.webm \
+		| head -1 \
+		| xargs ffmpeg -bsf:v h264_mp4toannexb -c copy -f hls -hls_list_size 0 hls/output.m3u8 -i
+
+
 listen-with-mpd:
 	cd mpeg-dash && mpv output.mpd
 
@@ -23,4 +29,4 @@ ffmpeg-live:
 
 
 clean:
-	rm public/recordings/*.webm mpeg-dash/*
+	rm public/recordings/*.webm mpeg-dash/* hls/*

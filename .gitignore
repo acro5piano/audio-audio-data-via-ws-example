@@ -111,3 +111,6 @@ public/recordings/*
 
 mpeg-dash/*
 !mpeg-dash/.gitkeep
+
+hls/*
+!hls/.gitkeep
