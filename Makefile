@@ -1,5 +1,8 @@
+dev:
+	$(MAKE) -j dev/server dev/frontend
+
 dev/server:
-	node -r esbuild-register server.ts
+	nodemon --watch server.ts --exec 'node -r esbuild-register server.ts'
 
 dev/frontend:
-	node -r esbuild-register server.ts
+	nodemon --watch frontend/*.ts --exec './node_modules/.bin/esbuild frontend/index.ts --bundle > public/build/index.js'
