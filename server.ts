@@ -22,7 +22,7 @@ app.post<{ Body: { data: any } }>('/audio-stream/input', async (req, res) => {
   const data = await req.file()
 
   const buffer = await data.toBuffer()
-  const newFileName = `${nanoid()}.webm`
+  const newFileName = `${new Date().toISOString()}-${nanoid(8)}.webm`
   await fs.writeFile(`public/recordings/${newFileName}`, buffer)
 
   ee.emit('append', `/recordings/${newFileName}`)

@@ -23,9 +23,7 @@ async function record() {
     recordedBlobs.push(event.data)
     const recordChunk = []
     recordChunk.push(event.data)
-    // note that the following code not works for some reason:
-    //   new Blob([event.data], { type: 'audio/webm' })
-    const superBlob = new Blob(recordChunk, { type: 'audio/webm' })
+    const superBlob = new Blob(recordChunk, { type: 'audio/webm' }) // TODO: in this way, only first chunk is a valid webm
     form.append('data', superBlob)
     fetch('/audio-stream/input', {
       method: 'POST',
@@ -56,8 +54,8 @@ async function listen() {
   const sse = new EventSource('/audio-stream/output', {
     withCredentials: false,
   })
-  sse.onmessage = (data) => {
-    console.log(data)
+  sse.onmessage = ({ data }) => {
+    console.log(data[0])
   }
 }
 
