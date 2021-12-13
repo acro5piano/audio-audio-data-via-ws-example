@@ -44,7 +44,7 @@ async function record() {
   //   }
   // };
 
-  recorder.start(1000)
+  recorder.start(3000)
 }
 
 function play() {

@@ -105,3 +105,6 @@ dist
 
 public/build/*
 !public/build/.gitkeep
+
+public/recordings/*
+!public/recordings/.gitkeep

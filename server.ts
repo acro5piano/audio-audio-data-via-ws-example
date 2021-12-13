@@ -1,4 +1,5 @@
 import Fastify from 'fastify'
+import { nanoid } from 'nanoid'
 import FastifyStatic from 'fastify-static'
 import path from 'path'
 import { FastifySSEPlugin } from 'fastify-sse-v2'
@@ -19,13 +20,13 @@ const ee = new EventEmitter()
 
 app.post<{ Body: { data: any } }>('/audio-stream/input', async (req, res) => {
   const data = await req.file()
-  console.log(data)
 
   const buffer = await data.toBuffer()
-  await fs.appendFile('/tmp/record.webm', buffer)
+  const newFileName = `${nanoid()}.webm`
+  await fs.writeFile(`public/recordings/${newFileName}`, buffer)
 
-  // ee.emit('append', req.body.data)
-  // ee.emit('append', '123')
+  ee.emit('append', `/recordings/${newFileName}`)
+
   res.send('ok')
 })
 

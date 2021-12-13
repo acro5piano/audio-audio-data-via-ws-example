@@ -6,3 +6,6 @@ dev/server:
 
 dev/frontend:
 	nodemon --watch frontend/*.ts --exec './node_modules/.bin/esbuild frontend/index.ts --bundle > public/build/index.js'
+
+clean:
+	rm public/build/index.js public/recordings/*
