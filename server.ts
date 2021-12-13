@@ -4,11 +4,7 @@ import path from 'path'
 import { FastifySSEPlugin } from 'fastify-sse-v2'
 import FastifyMultipart from 'fastify-multipart'
 import { on, EventEmitter } from 'events'
-import { pipeline } from 'stream'
-import fs from 'fs'
-import util from 'util'
-
-const pump = util.promisify(pipeline)
+import fs from 'fs/promises'
 
 const app = Fastify({ logger: true })
 
@@ -23,17 +19,10 @@ const ee = new EventEmitter()
 
 app.post<{ Body: { data: any } }>('/audio-stream/input', async (req, res) => {
   const data = await req.file()
-  // console.log(file)
   console.log(data)
-  // await pump(data.file, fs.createWriteStream('/tmp/record.webm'))
 
   const buffer = await data.toBuffer()
-  fs.appendFile('/tmp/record.webm', buffer, (error) => {
-    if (error) {
-      console.error(error)
-      return
-    }
-  })
+  await fs.appendFile('/tmp/record.webm', buffer)
 
   // ee.emit('append', req.body.data)
   // ee.emit('append', '123')
@@ -54,14 +43,3 @@ app.get('/audio-stream/output', (_req, res) => {
 })
 
 app.listen(9999)
-
-// function stringToArrayBuffer(str: string) {
-//   const buf = new ArrayBuffer(str.length)
-//   const bufView = new Uint8Array(buf)
-//
-//   for (let i = 0; i < str.length; i++) {
-//     bufView[i] = str.charCodeAt(i)
-//   }
-//
-//   return buf
-// }
