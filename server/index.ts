@@ -39,7 +39,7 @@ app.get('/audio-stream/output', (_req, res) => {
       for await (const event of on(ee, 'append')) {
         yield {
           type: event.name,
-          data: JSON.stringify(event),
+          data: event[0],
         }
       }
     })(),

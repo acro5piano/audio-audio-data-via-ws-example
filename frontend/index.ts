@@ -56,7 +56,7 @@ async function listen() {
     withCredentials: false,
   })
   sse.onmessage = ({ data }) => {
-    console.log(data[0])
+    console.log(data)
   }
 }
 
