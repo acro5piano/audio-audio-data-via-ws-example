@@ -15,7 +15,7 @@ gen-mpeg-dash:
 gen-hls:
 	find public/recordings/*.webm \
 		| head -1 \
-		| xargs ffmpeg -bsf:v h264_mp4toannexb -c copy -f hls -hls_list_size 0 hls/output.m3u8 -i
+		| xargs ffmpeg -bsf:v h264_mp4toannexb -c copy -f hls -hls_list_size 0 hls/output.m3u8 -re -i
 
 
 listen-with-mpd:
