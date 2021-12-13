@@ -1,0 +1,14 @@
+{
+  "name": "send-audio-data-via-ws-example",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:acro5piano/send-audio-data-via-ws-example",
+  "author": "Kay Gosho <ketsume0211@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "^0.14.3",
+    "esbuild-register": "^3.2.1",
+    "fastify": "^3.24.1",
+    "fastify-sse-v2": "^2.0.6"
+  }
+}
