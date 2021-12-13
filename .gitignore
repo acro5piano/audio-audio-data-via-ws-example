@@ -108,3 +108,6 @@ public/build/*
 
 public/recordings/*
 !public/recordings/.gitkeep
+
+mpeg-dash/*
+!mpeg-dash/.gitkeep
