@@ -15,5 +15,12 @@ gen-mpeg-dash:
 listen-with-mpd:
 	cd mpeg-dash && mpv output.mpd
 
+# use mpv 'udp://0.0.0.0:1234?listen'
+ffmpeg-live:
+	find public/recordings/*.webm \
+		| head -1 \
+		| xargs ffmpeg -f mpegts udp://0.0.0.0:1234 -re -i
+
+
 clean:
 	rm public/recordings/*.webm mpeg-dash/*
