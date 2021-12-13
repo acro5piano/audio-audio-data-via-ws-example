@@ -10,7 +10,10 @@ dev/frontend:
 gen-mpeg-dash:
 	find public/recordings/*.webm \
 		| head -1 \
-		| xargs ffmpeg -c copy -window_size 0 -movflags +faststart mpeg-dash/output.mpd -i
+		| xargs ffmpeg -c copy -window_size 0 -movflags +faststart mpeg-dash/output.mpd -re -i
+
+listen-with-mpd:
+	cd mpeg-dash && mpv output.mpd
 
 clean:
 	rm public/recordings/*.webm mpeg-dash/*
