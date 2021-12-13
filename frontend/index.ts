@@ -21,14 +21,15 @@ async function record() {
     }
     const form = new FormData()
     recordedBlobs.push(event.data)
-    // const superBuffer = new Blob(recordedBlobs, { type: 'audio/webm' })
-    // form.append('data', superBuffer)
+    const recordChunk = []
+    recordChunk.push(event.data)
+    // note that the following code not works for some reason:
+    //   new Blob([event.data], { type: 'audio/webm' })
+    const superBlob = new Blob(recordChunk, { type: 'audio/webm' })
+    form.append('data', superBlob)
     fetch('/audio-stream/input', {
       method: 'POST',
       body: form,
-      // headers: {
-      //   'Content-Type': 'multipart/form-data',
-      // },
     })
       .then((res) => res.text())
       .then(console.log)
@@ -47,27 +48,9 @@ async function record() {
 }
 
 function play() {
-  const superBuffer = new Blob(recordedBlobs, { type: 'audio/webm' })
-  document.querySelector('audio')!.src = window.URL.createObjectURL(superBuffer)
+  const superBlob = new Blob(recordedBlobs, { type: 'audio/webm' })
+  document.querySelector('audio')!.src = window.URL.createObjectURL(superBlob)
 }
-
-// function arrayBufferToString(buffer: Buffer) {
-//   const bufView = new Uint8Array(buffer)
-//   const length = bufView.length
-//
-//   let result = ''
-//   let addition = Math.pow(2, 8) - 1
-//
-//   for (let i = 0; i < length; i += addition) {
-//     if (i + addition > length) {
-//       addition = length - i
-//     }
-//     // @ts-ignore
-//     result += String.fromCharCode.apply(null, bufView.subarray(i, i + addition))
-//   }
-//
-//   return result
-// }
 
 async function listen() {
   const sse = new EventSource('/audio-stream/output', {
