@@ -12,7 +12,7 @@ async function record() {
 
   const stream = new window.MediaStream([audioTrack])
 
-  const mimeType = `audio/aac`
+  const mimeType = `audio/webm`
   const recorder = new MediaRecorder(stream, { mimeType })
 
   let seq = 0
