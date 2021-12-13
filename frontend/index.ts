@@ -12,9 +12,10 @@ async function record() {
 
   const stream = new window.MediaStream([audioTrack])
 
-  const mimeType = `${audioTrack.kind}/webm`
+  const mimeType = `audio/aac`
   const recorder = new MediaRecorder(stream, { mimeType })
 
+  let seq = 0
   recorder.ondataavailable = (event) => {
     if (!event.data.size) {
       return
@@ -23,14 +24,15 @@ async function record() {
     recordedBlobs.push(event.data)
     const recordChunk = []
     recordChunk.push(event.data)
-    const superBlob = new Blob(recordChunk, { type: 'audio/webm' }) // TODO: in this way, only first chunk is a valid webm
-    form.append('data', superBlob)
+    const superBlob = new Blob(recordChunk, { type: mimeType }) // TODO: in this way, only first chunk is a valid webm
+    form.append('data', superBlob, String(seq))
     fetch('/audio-stream/input', {
       method: 'POST',
       body: form,
     })
       .then((res) => res.text())
       .then(console.log)
+      .then(() => seq++)
   }
 
   // const audioConfig = AudioConfig.fromStreamInput(stream);
