@@ -1,5 +1,4 @@
 import Fastify from 'fastify'
-import { nanoid } from 'nanoid'
 import FastifyStatic from 'fastify-static'
 import path from 'path'
 import { FastifySSEPlugin } from 'fastify-sse-v2'
@@ -17,19 +16,15 @@ app.register(FastifySSEPlugin)
 app.register(FastifyMultipart)
 
 const ee = new EventEmitter()
-// let currentWebmHeader: any
+let pathName = ''
 
 app.post<{ Body: { data: any } }>('/audio-stream/input', async (req, res) => {
   const data = await req.file()
-
   const buffer = await data.toBuffer()
   const newFileName = `${data.filename}.webm`
-  const pathName = `public/recordings/${newFileName}`
-
+  pathName = `public/recordings/${newFileName}`
   await fs.appendFile(pathName, buffer)
-
   ee.emit('append', `/recordings/${newFileName}`)
-
   res.send('ok')
 })
 
@@ -44,6 +39,10 @@ app.get('/audio-stream/output', (_req, res) => {
       }
     })(),
   )
+})
+
+app.get('/audio-stream/initial', async (_req, res) => {
+  res.send(await fs.readFile(pathName))
 })
 
 app.listen(9999)

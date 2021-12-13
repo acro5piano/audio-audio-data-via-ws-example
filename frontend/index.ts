@@ -1,5 +1,3 @@
-const recordedBlobs: Blob[] = []
-
 async function record() {
   const media = await navigator.mediaDevices.getUserMedia({
     audio: true,
@@ -21,7 +19,6 @@ async function record() {
       return
     }
     const form = new FormData()
-    recordedBlobs.push(event.data)
     const recordChunk = []
     recordChunk.push(event.data)
     const superBlob = new Blob(recordChunk, { type: mimeType }) // TODO: in this way, only first chunk is a valid webm
@@ -46,20 +43,29 @@ async function record() {
   recorder.start(3000)
 }
 
-function play() {
-  const superBlob = new Blob(recordedBlobs, { type: 'audio/webm' })
-  document.querySelector('audio')!.src = window.URL.createObjectURL(superBlob)
-}
-
 async function listen() {
+  const recordedBlobs: Blob[] = []
+  const audioTag = document.querySelector('audio')!
+  await fetch('/audio-stream/initial')
+    .then((res) => res.arrayBuffer())
+    .then((d) => recordedBlobs.push(new Blob([d])))
   const sse = new EventSource('/audio-stream/output', {
     withCredentials: false,
   })
-  sse.onmessage = ({ data }) => {
-    console.log(data)
+  sse.onmessage = async ({ data }) => {
+    await fetch(data)
+      .then((res) => res.arrayBuffer())
+      .then((d) => recordedBlobs.push(new Blob([d])))
+    const superBlob = new Blob(recordedBlobs, { type: 'audio/webm' })
+    const currentTime = audioTag.currentTime
+    audioTag.src = window.URL.createObjectURL(superBlob)
+    audioTag.currentTime = currentTime
+    audioTag.play()
   }
+  const superBlob = new Blob(recordedBlobs, { type: 'audio/webm' })
+  audioTag.src = window.URL.createObjectURL(superBlob)
+  audioTag.play()
 }
 
 document.getElementById('record')!.addEventListener('click', record)
 document.getElementById('listen')!.addEventListener('click', listen)
-document.getElementById('play')!.addEventListener('click', play)
