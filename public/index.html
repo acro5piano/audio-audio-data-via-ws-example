@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.5.14/hls.min.js" integrity="sha512-js37JxjD6gtmJ3N2Qzl9vQm4wcmTilFffk0nTSKzgr3p6aitg73LR205203wTzCCC/NZYO2TAxSa0Lr2VMLQvQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    </head>
+
     <body>
         <button id="record">record</button>
         <button id="listen">listen</button>
         <button id="play">play</button>
 
-        <audio src="" controls />
+        <audio src="" controls></audio>
+        <audio src="/hls/output.m3u8" controls></audio>
     </body>
     <script src="/public/build/index.js"></script>
 </html>
