@@ -114,3 +114,6 @@ mpeg-dash/*
 
 hls/*
 !hls/.gitkeep
+
+wav/*
+!wav/.gitkeep
