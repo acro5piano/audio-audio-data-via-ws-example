@@ -7,7 +7,7 @@ import FastifyMultipart from 'fastify-multipart'
 import cors from 'fastify-cors'
 import { on, EventEmitter } from 'events'
 import fsPromise from 'fs/promises'
-import ffmpeg from 'fluent-ffmpeg'
+import { execa } from 'execa'
 
 const app = Fastify({ logger: true })
 
@@ -27,13 +27,10 @@ let ffmpegStarted = false
 ee.on('start-ffmpeg', async () => {
   ffmpegStarted = true
   await delay(3000)
-  ffmpeg(pathName)
-    .inputOption('-re')
-    .on('end', () => {
-      console.log('\n\n=================================Done!!\n\n')
-    })
-    .on('error', console.error)
-    .save('./hls/output.m3u8')
+  await Promise.all([
+    execa('ffmpeg', ['-re', '-i', pathName, 'hls/output.m3u8']),
+    execa('ffmpeg', ['-re', '-i', pathName, 'wav/output.wav']),
+  ])
 })
 
 app.post<{ Body: { data: any } }>('/audio-stream/input', async (req, res) => {

@@ -21,6 +21,7 @@
   "dependencies": {
     "delay": "^5.0.0",
     "dotenv": "^10.0.0",
+    "execa": "^6.0.0",
     "fastify-cors": "^6.0.2",
     "fastify-formbody": "^5.2.0",
     "fastify-multipart": "^5.2.1",

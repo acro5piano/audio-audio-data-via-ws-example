@@ -13,4 +13,4 @@ gen-hls:
 		| xargs ffmpeg hls/output.m3u8 -re -i
 
 clean:
-	rm public/recordings/*.webm mpeg-dash/* hls/*
+	rm public/recordings/*.webm mpeg-dash/* hls/* wav/*
