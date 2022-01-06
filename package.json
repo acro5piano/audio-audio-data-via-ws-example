@@ -5,7 +5,11 @@
   "repository": "git@github.com:acro5piano/send-audio-data-via-ws-example",
   "author": "Kay Gosho <ketsume0211@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "r": "node -r esbuild-register"
+  },
   "devDependencies": {
+    "@types/fluent-ffmpeg": "^2.1.20",
     "@types/node": "^16.11.12",
     "esbuild": "^0.14.3",
     "esbuild-register": "^3.2.1",
@@ -15,11 +19,13 @@
     "typescript": "^4.5.3"
   },
   "dependencies": {
+    "delay": "^5.0.0",
     "dotenv": "^10.0.0",
     "fastify-cors": "^6.0.2",
     "fastify-formbody": "^5.2.0",
     "fastify-multipart": "^5.2.1",
     "fastify-static": "^4.5.0",
+    "fluent-ffmpeg": "^2.1.2",
     "microsoft-cognitiveservices-speech-sdk": "^1.19.0",
     "nanoid": "^3.1.30",
     "webm-cluster-stream": "^1.0.0"
