@@ -2,10 +2,9 @@ import Fastify from 'fastify'
 import delay from 'delay'
 import FastifyStatic from 'fastify-static'
 import path from 'path'
-import { FastifySSEPlugin } from 'fastify-sse-v2'
 import FastifyMultipart from 'fastify-multipart'
 import cors from 'fastify-cors'
-import { on, EventEmitter } from 'events'
+import { EventEmitter } from 'events'
 import fsPromise from 'fs/promises'
 import { execa } from 'execa'
 
@@ -17,7 +16,6 @@ app.register(FastifyStatic, {
   root: path.resolve(__dirname, '../'),
 })
 
-app.register(FastifySSEPlugin)
 app.register(FastifyMultipart)
 
 const ee = new EventEmitter()
@@ -44,19 +42,6 @@ app.post<{ Body: { data: any } }>('/audio-stream/input', async (req, res) => {
     ee.emit('start-ffmpeg')
   }
   res.send('ok')
-})
-
-app.get('/audio-stream/output', (_req, res) => {
-  res.sse(
-    (async function* () {
-      for await (const event of on(ee, 'append')) {
-        yield {
-          type: event.name,
-          data: event[0],
-        }
-      }
-    })(),
-  )
 })
 
 app.get('/audio-stream/initial', async (_req, res) => {
