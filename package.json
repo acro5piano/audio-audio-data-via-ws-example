@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@types/fluent-ffmpeg": "^2.1.20",
+    "@types/ioredis": "^4.28.7",
     "@types/node": "^16.11.12",
     "esbuild": "^0.14.3",
     "esbuild-register": "^3.2.1",
@@ -27,6 +28,7 @@
     "fastify-multipart": "^5.2.1",
     "fastify-static": "^4.5.0",
     "fluent-ffmpeg": "^2.1.2",
+    "ioredis": "^4.28.3",
     "microsoft-cognitiveservices-speech-sdk": "^1.19.0",
     "nanoid": "^3.1.30",
     "webm-cluster-stream": "^1.0.0"
