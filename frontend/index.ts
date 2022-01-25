@@ -19,10 +19,8 @@ async function record() {
       return
     }
     const form = new FormData()
-    const recordChunk = []
-    recordChunk.push(event.data)
-    const superBlob = new Blob(recordChunk, { type: mimeType }) // TODO: in this way, only first chunk is a valid webm
-    form.append('data', superBlob, String(filename))
+    const blob = new Blob([event.data], { type: mimeType }) // TODO: in this way, only first chunk is a valid webm
+    form.append('data', blob, String(filename))
     fetch('/audio-stream/input', {
       method: 'POST',
       body: form,
