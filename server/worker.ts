@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events'
-// import { Redis } from 'ioredis'
+
 import { execa } from 'execa'
 import delay from 'delay'
 
