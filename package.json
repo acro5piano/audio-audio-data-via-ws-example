@@ -26,6 +26,7 @@
     "fastify-static": "^4.5.0",
     "microsoft-cognitiveservices-speech-sdk": "^1.19.0",
     "mqemitter-redis": "^4.2.0",
-    "nanoid": "^3.1.30"
+    "nanoid": "^3.1.30",
+    "opus-media-recorder": "^0.8.0"
   }
 }
