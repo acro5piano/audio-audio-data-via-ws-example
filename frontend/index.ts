@@ -1,3 +1,24 @@
+const mimeType = 'audio/webm'
+
+function createRecorder(stream: MediaStream): MediaRecorder {
+  if (MediaRecorder.isTypeSupported('audio/webm')) {
+    return new MediaRecorder(stream, { mimeType })
+  } else {
+    // Safari is not support audio/webm natively, so we should use WASM.
+    // @ts-ignore
+    return new OpusMediaRecorder(
+      stream,
+      { mimeType },
+      {
+        OggOpusEncoderWasmPath:
+          'https://cdn.jsdelivr.net/npm/opus-media-recorder@latest/OggOpusEncoder.wasm',
+        WebMOpusEncoderWasmPath:
+          'https://cdn.jsdelivr.net/npm/opus-media-recorder@latest/WebMOpusEncoder.wasm',
+      },
+    )
+  }
+}
+
 async function record() {
   const media = await navigator.mediaDevices.getUserMedia({
     audio: true,
@@ -10,8 +31,7 @@ async function record() {
 
   const stream = new window.MediaStream([audioTrack])
 
-  const mimeType = `audio/webm`
-  const recorder = new MediaRecorder(stream, { mimeType })
+  const recorder = createRecorder(stream)
 
   const filename = Date.now()
   recorder.ondataavailable = (event) => {
@@ -19,7 +39,7 @@ async function record() {
       return
     }
     const form = new FormData()
-    const blob = new Blob([event.data], { type: mimeType }) // TODO: in this way, only first chunk is a valid webm
+    const blob = new Blob([event.data], { type: mimeType })
     form.append('data', blob, String(filename))
     fetch('/audio-stream/input', {
       method: 'POST',
