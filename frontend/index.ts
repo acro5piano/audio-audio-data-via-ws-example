@@ -10,7 +10,7 @@ async function record() {
 
   const stream = new window.MediaStream([audioTrack])
 
-  const mimeType = `audio/webm`
+  const mimeType = getValidMimeType()
   const recorder = new MediaRecorder(stream, { mimeType })
 
   const filename = Date.now()
@@ -19,7 +19,7 @@ async function record() {
       return
     }
     const form = new FormData()
-    const blob = new Blob([event.data], { type: mimeType }) // TODO: in this way, only first chunk is a valid webm
+    const blob = new Blob([event.data], { type: mimeType })
     form.append('data', blob, String(filename))
     fetch('/audio-stream/input', {
       method: 'POST',
@@ -30,6 +30,19 @@ async function record() {
   }
 
   recorder.start(3000)
+}
+
+function getValidMimeType() {
+  const mimeTypes = [
+    'audio/webm', // chrome, firefox
+    'audio/mp4', // safari
+  ]
+  for (const mimeType of mimeTypes) {
+    if (MediaRecorder.isTypeSupported(mimeType)) {
+      return mimeType
+    }
+  }
+  throw new Error('Cannot find valid mimeType')
 }
 
 document.getElementById('record')!.addEventListener('click', record)
