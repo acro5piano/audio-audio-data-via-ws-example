@@ -1,7 +1,7 @@
 const mimeType = 'audio/webm'
 
 function createRecorder(stream: MediaStream): MediaRecorder {
-  if (MediaRecorder.isTypeSupported('audio/webm')) {
+  if (MediaRecorder.isTypeSupported(mimeType)) {
     return new MediaRecorder(stream, { mimeType })
   } else {
     // Safari is not support audio/webm natively, so we should use WASM.
